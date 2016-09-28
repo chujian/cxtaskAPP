@@ -2,7 +2,7 @@ import React,{ Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import Project from '../Components/Project'
+import Project from '../Components/Project/Project'
 
 class ProjectConstanter extends Component {
   render(){

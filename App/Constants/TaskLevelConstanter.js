@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import TaskLevel from '../Components/TaskLevel';
+import TaskLevel from '../Components/Task/TaskLevel';
 
 class TaskLevelConstanter extends React.Component {
   render() {

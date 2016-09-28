@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import TaskAdd from '../Components/TaskAdd';
+import TaskAdd from '../Components/Task/TaskAdd';
 
 class TaskAddConstanter extends React.Component {
   render() {

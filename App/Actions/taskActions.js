@@ -45,6 +45,8 @@ export let fetchTaskList = (userCode, taskStatus, token) => {
 export let saveTask = (userCode,token,postData) => {
   return dispatch => {
     //dispatch(requestTask());
+    //先清空保存结果
+    dispatch(receiveAddResult('',''));
     fetch(`${APPSERVER}/saveTask`, {
             method: "POST",
             headers: {
@@ -63,6 +65,7 @@ export let saveTask = (userCode,token,postData) => {
               task_parterid: postData.task_parterCode,
               task_level: postData.task_level,
               task_notes: postData.task_note,
+              task_parentid: 0,//父任务id
               userCode: userCode,
               token: token
             })
@@ -70,12 +73,15 @@ export let saveTask = (userCode,token,postData) => {
         .then((response) => response.json())
         .then((json) => {
           //console.log('savetask===='+JSON.stringify(json));
-          //dispatch(receiveTask(json));
+          let result = json.status === '00' ? 'success' : 'fail';
+          dispatch(receiveAddResult(result,json.message));
         })
         .catch((error) => {
             //dispatch({type: TYPES.TASK_RECEIVE_FAIL});
+            dispatch(receiveAddResult('faile',json.message));
             console.log('保存任务失效' + error);
-        });
+        })
+        .done()
   }
 }
 
@@ -218,5 +224,14 @@ export let refreshTask = () => {
 export let cancelTask = () => {
   return {
     type: TYPES.CANCEL_TASK
+  }
+}
+
+//添加返回结果
+export let receiveAddResult = (result,message) => {
+  return {
+    type: TYPES.ADD_TASK_RESULT,
+    result,
+    message
   }
 }

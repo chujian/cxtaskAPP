@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import TaskNote from '../Components/TaskNote';
+import TaskNote from '../Components/Task/TaskNote';
 
 class TaskNoteConstanter extends React.Component {
   render() {

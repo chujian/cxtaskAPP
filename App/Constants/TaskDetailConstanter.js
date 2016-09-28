@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import TaskDetail from '../Components/TaskDetail';
+import TaskDetail from '../Components/Task/TaskDetail';
 
 class TaskDetailConstanter extends React.Component {
   render() {

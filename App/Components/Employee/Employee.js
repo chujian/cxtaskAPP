@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import NavigationBar from 'react-native-navbar'
 import EmployeeItem from './EmployeeItem'
-import Loading from '../loading';
+import Loading from '../Common/loading';
 
 import Icon from 'react-native-vector-icons/Ionicons'
 

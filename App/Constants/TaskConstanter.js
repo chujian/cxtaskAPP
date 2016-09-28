@@ -2,7 +2,7 @@ import React,{ Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import Task from '../Components/Task'
+import Task from '../Components/Task/Task_new'
 
 class TaskConstanter extends Component {
   render(){

@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 import ProjectIndex from './ProjectIndex'
-import Message from './../Message'
+import Message from '../Message/Message'
 
 
 class ProjectDetail extends Component {

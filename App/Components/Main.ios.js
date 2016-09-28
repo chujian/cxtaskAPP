@@ -6,14 +6,15 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import Loading from './loading'
-import Profile from './Profile'
-import LeftButton from './LeftButton'
+import Loading from './Common/loading'
+import Profile from './User/Profile'
+import LeftButton from './Common/LeftButton'
 
-import TaskConstanter from '../Constants/TaskConstanter'
+//import TaskConstanter from '../Constants/TaskConstanter'
+import TaskConstanter from './Task/TaskIndex'
 import ProjectConstanter from '../Constants/ProjectConstanter'
 import MyWork from './Myworks/MyWork'
-import Message from './Message'
+import Message from './Message/Message'
 
 
 class Main extends Component {

@@ -97,6 +97,15 @@ let taskReducer = (state=initialState,action) => {
       ...state,
       isRefresh: true
     }
+
+    //任务添加结果
+    case TYPES.ADD_TASK_RESULT:
+    return {
+      ...state,
+      addTaskResult: action.result,
+      message: action.message,
+    }
+
     default:
     return state;
   }

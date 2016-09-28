@@ -16,7 +16,7 @@ import {
 
 import {userLogin,userLoginFail} from '../Actions/userActions';
 import Icon from 'react-native-vector-icons/Ionicons'
-import Loading from './loading';
+import Loading from './Common/loading';
 import Main from './Main';
 
 const {height, width} = Dimensions.get('window');

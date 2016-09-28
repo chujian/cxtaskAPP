@@ -9,7 +9,7 @@ import {
 
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/Ionicons';
-import LeftButton from '../LeftButton'
+import LeftButton from '../Common/LeftButton'
 
 export default class ProjectIndex extends Component {
     // 构造
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     ProjectLog: {
-      
+
     }
 });

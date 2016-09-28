@@ -21,7 +21,7 @@ export const TASK_LIST_RECEIVE = 'TASK_LIST_RECEIVE'; //接收任务列表
 export const TASK_LIST_RECEIVE_FAIL = 'TASK_LIST_RECEIVE_FAIL';//获取任务列表失败
 
 export const ADD_TASK_REQUEST = 'ADD_TASK_REQUEST'; //正在添加任务
-export const ADD_TASK_COMPLETE = 'ADD_TASK_COMPLETE'; //添加任务完成
+export const ADD_TASK_RESULT = 'ADD_TASK_RESULT'; //添加任务结果
 export const ADD_TASK_NOTE = 'ADD_TASK_NOTE';//添加任务备注
 export const CHANGE_TASK_LEVEL = 'CHANGE_TASK_LEVEL';//改变任务级别
 export const CANCEL_TASK = 'CANCEL_TASK';//取消编辑任务

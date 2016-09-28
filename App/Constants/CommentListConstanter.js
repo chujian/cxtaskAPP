@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import CommentList from '../Components/CommentList';
+import CommentList from '../Components/Comment/CommentList';
 
 class CommentListConstanter extends React.Component {
   render() {

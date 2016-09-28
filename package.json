@@ -8,10 +8,11 @@
   "dependencies": {
     "moment": "^2.15.0",
     "react": "15.3.1",
-    "react-native": "0.33.0",
+    "react-native": "0.34.0",
     "react-native-barcodescanner": "^3.1.1",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-navbar": "^1.5.0",
+    "react-native-scrollable-tab-view": "^0.6.0",
     "react-native-swipe-list-view": "^0.3.0",
     "react-native-vector-icons": "^2.1.0",
     "react-redux": "^4.4.5",
