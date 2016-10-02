@@ -48,12 +48,17 @@ class TaskItem extends Component {
             }
             underlayColor = "#A8CEBF" >
             <View style = {styles.Item}>
-              <View style = {styles.ItemTitle}>
-                <View style = {styles.FaceView}>{this._picpath()}</View>
+              <View style = {styles.ItemHead}>
+                {this._picpath()}
+                <View style = {styles.TaskPublisher}><Text>{Task.t_creatorName}</Text><Text>9月26日 12:12:12 iphone</Text></View>
+                <View style = {styles.ItemTaskStatus}><Text>任务-处理中</Text><Text>0/4</Text></View>
               </View>
               <View style = {styles.ItemContent}>
+                <View style = {styles.TaskTitle}><Text>我是标题，标题，标题</Text></View>
+                <View style = {styles.TaskContent}><Text>我是标题，标题，标题</Text></View>
               </View>
               <View style={styles.ItemToolBar}>
+              <Text>我是工具栏</Text>
               </View>
 
             </View>
@@ -67,60 +72,47 @@ const styles = StyleSheet.create({
         width: 38,
         height: 38,
         borderRadius: 20,
-        marginLeft:10,
+        //marginLeft:10,
+        marginRight:10,
     },
+    //单个ITEM的VIEW
     Item: {
-      justifyContent: 'center',
-      alignItems:'center',
+      //justifyContent: 'center',
+      //alignItems:'center',
+      flex:1,
+      flexDirection:'column',
+      backgroundColor: '#0E0',
+      marginBottom:15,
+    },
+    //ITEM的最上部分,指定高度
+    ItemHead: {
+      flex: 1,
+      padding:10,
       flexDirection:'row',
-      backgroundColor: '#FFF',
+      alignItems:'center',
+      justifyContent: 'center',
+      backgroundColor: '#ccc',
+    },
+    //头部中间的view,使用flex，
+    TaskPublisher: {
+      flex:1,
+      backgroundColor: '#EEE',
+      alignItems:'flex-start',
+
+    },
+    ItemTaskStatus: {
+      width: 100,
+      alignItems:'flex-start',
+      backgroundColor: '#EEF',
     },
     ItemContent:{
       flex:1,
-      justifyContent: 'center',
-      flexDirection:'row',
-      alignItems:'center',
-      borderBottomColor: '#ccc',
-      borderBottomWidth: 0.5,
-      //marginLeft:10,
-      //marginRight:10,
-      padding:0,
-    },
-    ItemContentLeft: {
+      //alignItems: 'flex-start',
       flexDirection:'column',
-      flex:1,
-      justifyContent: 'center',
-    //  backgroundColor:'#ccc',
-      padding:5,
+    //  alignItems:'center',
     },
-    ItemContentTitle: {
-      height:35,
-      justifyContent: 'center',
-      //backgroundColor:'#c0c',
-    },
-    ItemContentNameDate: {
-      flexDirection:'row',
-      justifyContent: 'space-between',
-      alignItems:'center',
-      padding:1,
-      //backgroundColor:'#ccc',
-    },
-    Issuer: {
-      fontSize:17,
-      color:'#000',
-    },
-    Title: {
-      fontSize:14,
-      color:'#9BA3A0',
-    },
-    unRead: {
-      width: 10,
-      height: 10,
-      right:0,
-      top:-5,
-      borderRadius: 20,
-      //backgroundColor:'red',
-      position: 'absolute',
+    TaskTitle: {
+      alignItems: 'flex-start',
     }
 });
 

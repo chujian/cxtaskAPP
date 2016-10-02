@@ -193,6 +193,7 @@ class Employee extends Component {
         <ListView
               enableEmptySections={true}
               automaticallyAdjustContentInsets={false}
+              removeClippedSubviews={false}
               ref='EmployeeLists'
               dataSource={source}
               initialListSize={10}

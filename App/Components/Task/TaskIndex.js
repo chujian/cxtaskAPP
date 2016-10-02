@@ -12,9 +12,23 @@ import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import Task from '../../Constants/TaskConstanter'
+import TaskAddConstanter from '../../Constants/TaskAddConstanter'
 
 class TaskIndex extends Component {
+  //打开新建任务
+  _toTaskAdd(){
+    const {navigator} = this.props;
+    navigator.push({
+      name: 'TaskAdd',
+      component: TaskAddConstanter,
+    });
+  }
   render() {
+    //const {user,task} = this.props;
+    //let wclCount = !task.List['1'] ? 0 : task.List['1'].taskList.length;
+    //let clzCount = !task.List['2'] ? 0 : task.List['2'].taskList.length;
+    //let ywcCount = !task.List['3'] ? 0 : task.List['3'].taskList.length;
+
     return(
       <View style = {{flex: 1}}>
       <NavigationBar
@@ -29,9 +43,9 @@ class TaskIndex extends Component {
       style={{marginTop: 0, }}
       renderTabBar={() => <DefaultTabBar />}
     >
-      <Task tabLabel='未处理'/>
-      <Task tabLabel='处理中'/>
-      <Task tabLabel='已完成'/>
+      <Task tabLabel={'未处理'} TaskStatus='1' />
+      <Task tabLabel='处理中' TaskStatus='2'/>
+      <Task tabLabel='已完成' TaskStatus='3'/>
     </ScrollableTabView>
     </View>
   );

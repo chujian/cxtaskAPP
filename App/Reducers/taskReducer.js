@@ -1,7 +1,7 @@
 import * as TYPES from '../Constants/ActionTypes';
 
 const initialState = {
-  isFetching: true,
+  isFetching: false,
   isRefresh: false,//是否刷新列表
   List:{},
   taskNew:{
