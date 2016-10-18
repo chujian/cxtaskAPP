@@ -36,16 +36,16 @@ class TaskIndex extends Component {
         tintColor={'#3F465A'}
         statusBar={{style:'light-content',showAnimation:'slide'}}
         title={{title: '我的任务',tintColor:'#FFF'}}
-        rightButton={<View style={{alignItems:'center',justifyContent: 'center',marginRight:10,}}><Icon name="ios-add-circle-outline" size={32} color='#FFF' onPress={() => this._toTaskAdd()}  /></View>}
-        leftButton={Platform.OS==='android'?<View style={{alignItems:'center',justifyContent: 'center',marginLeft:10,}}><Icon name="ios-menu" size={32} color='#FFF' onPress={() => this.props.onPress()}  /></View>:<View/>}
+        rightButton={<View style={{flexDirection:'row',alignItems:'center',justifyContent: 'center',marginRight:20,}}><Icon name="md-search" size={32} color='#FFF' style={{paddingRight:20,}} onPress={() => this._toTaskAdd()}  /><Icon name="md-add" size={32} color='#FFF' onPress={() => this._toTaskAdd()}  /></View>}
+        leftButton={Platform.OS==='android'?<View style={{alignItems:'center',justifyContent: 'center',marginLeft:20,}}><Icon name="ios-menu" size={32} color='#FFF' onPress={() => this.props.onPress()}  /></View>:<View/>}
         />
         <ScrollableTabView
       style={{marginTop: 0, }}
       renderTabBar={() => <DefaultTabBar />}
     >
-      <Task tabLabel={'未处理'} TaskStatus='1' />
-      <Task tabLabel='处理中' TaskStatus='2'/>
-      <Task tabLabel='已完成' TaskStatus='3'/>
+      <Task tabLabel={'未处理'} TaskStatus='1' {...this.props} />
+      <Task tabLabel='处理中' TaskStatus='2' {...this.props}/>
+      <Task tabLabel='已完成' TaskStatus='3' {...this.props}/>
     </ScrollableTabView>
     </View>
   );

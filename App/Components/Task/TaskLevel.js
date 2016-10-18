@@ -38,7 +38,7 @@ class TaskLevel extends Component {
           style={{marginTop: Platform.OS === 'android' ? 25 : 0,}}
           statusBar={{style:'light-content',showAnimation:'slide'}}
           tintColor={'#34b2e5'}
-          title={{title: '选择任务等级',tintColor:'#FFF'}}
+          title={{title: '选择任务级别',tintColor:'#FFF'}}
           leftButton={<View style={{alignItems:'center',justifyContent: 'center',marginLeft:20,flexDirection:'row',}}><Icon name="ios-arrow-back" size={32} color='#FFF' /><Text onPress={() => this.props.navigator.pop()} style={{color:'#fff',marginLeft:10}}>返回</Text></View>}
           />
         <ScrollView contentContainerStyle={styles.scroll}>
@@ -57,7 +57,7 @@ class TaskLevel extends Component {
           </View>
         </View>
         </TouchableHighlight>
-        <TouchableHighlight onPress = {() => this._changeLevel('紧急')}
+        <TouchableHighlight onPress = {() => this._changeLevel('重要又紧急')}
             underlayColor = "#A8CEBF" >
         <View style={styles.Item}>
           {/*icon view*/}
@@ -66,12 +66,42 @@ class TaskLevel extends Component {
           </View>
           {/*ItemContent*/}
           <View style={[styles.ItemContent,{borderBottomColor: '#ccc',borderBottomWidth: 0.5,}]}>
-            <Text style={{color:'#d2691e'}}>紧急</Text>
-            {task.taskNew.taskLevel === '紧急' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
+            <Text style={{color:'#d2691e'}}>重要又紧急</Text>
+            {task.taskNew.taskLevel === '重要又紧急' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
           </View>
         </View>
         </TouchableHighlight>
-        <TouchableHighlight onPress = {() => this._changeLevel('非常紧急')}
+        <TouchableHighlight onPress = {() => this._changeLevel('重要不紧急')}
+            underlayColor = "#A8CEBF" >
+        <View style={styles.Item}>
+          {/*icon view*/}
+          <View style={styles.ItemIcon}>
+            <Icon name="ios-megaphone-outline" size={32} color='red' />
+          </View>
+          {/*ItemContent*/}
+          <View style={[styles.ItemContent,{borderBottomColor: '#ccc',borderBottomWidth: 0.5,}]}>
+            <Text style={{color:'red'}}>重要不紧急</Text>
+            {task.taskNew.taskLevel === '重要不紧急' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
+          </View>
+        </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress = {() => this._changeLevel('紧急不重要')}
+            underlayColor = "#A8CEBF" >
+        <View style={styles.Item}>
+          {/*icon view*/}
+          <View style={styles.ItemIcon}>
+            <Icon name="ios-megaphone-outline" size={32} color='red' />
+          </View>
+          {/*ItemContent*/}
+          <View style={[styles.ItemContent,{borderBottomColor: '#ccc',borderBottomWidth: 0.5,}]}>
+            <Text style={{color:'red'}}>紧急不重要</Text>
+            {task.taskNew.taskLevel === '紧急不重要' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
+          </View>
+        </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress = {() => this._changeLevel('不紧急不重要')}
             underlayColor = "#A8CEBF" >
         <View style={styles.Item}>
           {/*icon view*/}
@@ -80,11 +110,12 @@ class TaskLevel extends Component {
           </View>
           {/*ItemContent*/}
           <View style={styles.ItemContent}>
-            <Text style={{color:'red'}}>非常紧急</Text>
-            {task.taskNew.taskLevel === '非常紧急' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
+            <Text style={{color:'red'}}>不紧急不重要</Text>
+            {task.taskNew.taskLevel === '不紧急不重要' ? <Icon name="ios-checkmark-outline" size={24} color='blue' />:null}
           </View>
         </View>
         </TouchableHighlight>
+
         </View>
         </ScrollView>
         </View>

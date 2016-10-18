@@ -32,8 +32,8 @@ export default class TaskEmpty extends Component {
             refreshing={false}
             onRefresh={this.props.onRefresh}
             tintColor="#ff0000"
-            title="加载中..."
-            titleColor="#00ff00"
+            title="数据加载中..."
+            titleColor="#000"
             colors={['#ff0000', '#00ff00', '#0000ff']}
             progressBackgroundColor="#000"
           />}

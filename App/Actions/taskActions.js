@@ -1,20 +1,20 @@
 'use strict'
 import {
     Platform,
+    StatusBar,
 } from 'react-native';
 import {APPSERVER,APPKEY} from '../Utils/config';
 import * as TYPES from '../Constants/ActionTypes';
 import toQueryString from '../Utils/request'
-import {StatusBar} from 'react-native'
 
 //获取tasklist
-export let fetchTaskList = (userCode, taskStatus, token) => {
+export let fetchTaskList = (userCode, taskStatus, token, page, isLoadMore, isRefreshing, isLoading) => {
     return dispatch => {
         if (Platform.OS === 'ios') {
           StatusBar.setNetworkActivityIndicatorVisible(true);
         }
-        dispatch(requestTask());
-        fetch(`${APPSERVER}/getTask?userCode=${userCode}&task_status=${taskStatus}&token=${token}`, {
+        dispatch(requestTask(isLoadMore, isRefreshing, isLoading,taskStatus));
+        fetch(`${APPSERVER}/getTask?userCode=${userCode}&task_status=${taskStatus}&token=${token}&page=${page}`, {
                 method: "GET",
                 headers: {
                     'Accept': 'application/json',
@@ -26,7 +26,8 @@ export let fetchTaskList = (userCode, taskStatus, token) => {
               if (Platform.OS === 'ios') {
                 StatusBar.setNetworkActivityIndicatorVisible(false);
               }
-              dispatch(receiveTaskList(json.data,taskStatus));
+              let isNoMore = json.totalPage === page ? true : false;
+              dispatch(receiveTaskList(json.data,taskStatus,isNoMore));
             })
             .catch((error) => {
                 if (Platform.OS === 'ios') {
@@ -34,7 +35,6 @@ export let fetchTaskList = (userCode, taskStatus, token) => {
                 }
                 dispatch(receiveTaskList([]));
                 dispatch({type: TYPES.TASK_RECEIVE_FAIL});
-                console.log('获取任务列表失效' + error);
             });
     };
 }
@@ -154,20 +154,23 @@ export let deleteStoreTask = (status,index) => {
 }
 
 //正在获取task列表
-export let requestTask = () => {
+export let requestTask = (isLoadMore, isRefreshing, isLoading,taskStatus) => {
     return {
         type: TYPES.TASK_REQUEST,
-        isFetching: true,
+        isLoadMore: isLoadMore,
+        isRefreshing: isRefreshing,
+        isLoading: isLoading,
+        taskStatus
     }
 }
 
 //接收tasklist
-export let receiveTaskList = (taskList,taskStatus) => {
+export let receiveTaskList = (taskList, taskStatus, isNoMore) => {
     return {
         type: TYPES.TASK_RECEIVE,
-        isFetching: false,
         taskList,
-        taskStatus
+        taskStatus,
+        isNoMore,
     }
 }
 
@@ -235,3 +238,11 @@ export let receiveAddResult = (result,message) => {
     message
   }
 }
+
+//重置状态
+/*
+export let resetTaskState = () => {
+  return {
+    type: TYPES.RESET_TASK_STATE
+  }
+}*/

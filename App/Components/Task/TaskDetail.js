@@ -1,5 +1,4 @@
 'use strict'
-
 import React,{Component} from 'react'
 import {
   StyleSheet,
@@ -24,6 +23,7 @@ import TaskLevel from '../../Constants/TaskLevelConstanter'
 import TaskProjectSortStatus from './TaskProSortStatus'
 import EmployeeConstanter from '../../Constants/EmployeeConstanter'
 import CommentListConstanter from '../../Constants/CommentListConstanter'
+import CommentAddConstanter from '../../Constants/CommentAddConstanter'
 
 import {fetchTaskDetail,cancelTask,saveTask,readTask,addTaskNote,changeTaskLevel,localReadTask} from '../../Actions/taskActions'
 
@@ -34,6 +34,7 @@ class TaskDetail extends Component {
     super(props)
     this.state = {
       token: '',
+      task_id: '',//任务id
       task_title: '',//任务标题
       task_executor: '',//发布人,执行人
       task_executorCode: '',//执行人code
@@ -92,6 +93,18 @@ class TaskDetail extends Component {
     });
   }
 
+  //打开评论添加界面
+  _openCommentAdd(){
+    const {navigator,taskInfo} = this.props
+    navigator.push({
+      name: "CommentAdd",
+      component: CommentAddConstanter,
+      params: {
+        task_id: taskInfo.t_id,
+      }
+    });
+  }
+
   //保存任务
   _saveTask(){
     const {dispatch,user,navigator} = this.props
@@ -146,6 +159,7 @@ class TaskDetail extends Component {
 
     this.setState({
       token: token,//token
+      task_id: taskInfo.t_id,//任务id
       task_title: taskInfo.t_title,//标题
       task_executor: taskInfo.t_creatorName,//发布人姓名
       task_executorCode: taskInfo.t_executor,//发布人ID
@@ -244,7 +258,7 @@ class TaskDetail extends Component {
         <NavigationBar
           style={{marginTop: Platform.OS === 'android' ? 25 : 0,}}
           statusBar={{style:'light-content',showAnimation:'slide'}}
-          tintColor={'rgba(0, 154, 210, 0.8)'}
+          tintColor={'#3F465A'}
           title={{title: '任务详情',tintColor:'#FFF'}}
           rightButton={rightButtonConfig}
           leftButton={<LeftButton onPress={()=>this._taskCancel()} />}
@@ -394,9 +408,7 @@ class TaskDetail extends Component {
             </View>
             </TouchableHighlight>
           </View>
-
-
-          <CommentListConstanter  taskId={this.props.taskInfo.t_id}/>
+          <CommentListConstanter {...this.props}  taskId={this.props.taskInfo.t_id}/>
         </ScrollView>
 
         <DatePicker
@@ -410,7 +422,7 @@ class TaskDetail extends Component {
         }
         minimumDate={new Date()}
         />
-        <TaskToolbar />
+        <TaskToolbar {...this.props} openComment={()=>this._openCommentAdd()} />
       </View>
     );
   }
@@ -494,5 +506,4 @@ const styles = StyleSheet.create({
       color:'#000',
     }
 });
-
 export default TaskDetail;

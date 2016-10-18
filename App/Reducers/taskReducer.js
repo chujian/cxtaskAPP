@@ -1,8 +1,27 @@
 import * as TYPES from '../Constants/ActionTypes';
 
 const initialState = {
-  isFetching: false,
-  isRefresh: false,//是否刷新列表
+  //先初始化几个任务状态的 状态
+  Status:{
+    [1]:{
+      isLoading: true,
+      isLoadMore: false,
+      isRefreshing: false,
+      isNoMore: false,
+    },
+    [2]:{
+      isLoading: true,
+      isLoadMore: false,
+      isRefreshing: false,
+      isNoMore: false,
+    },
+    [3]:{
+      isLoading: true,
+      isLoadMore: false,
+      isRefreshing: false,
+      isNoMore: false,
+    },
+  },
   List:{},
   taskNew:{
     taskNote: '',
@@ -14,11 +33,18 @@ const initialState = {
 
 let taskReducer = (state=initialState,action) => {
   switch (action.type) {
+    //请求任务
     case TYPES.TASK_REQUEST:
     return {
       ...state,
-      isFetching: action.isFetching,
-      isRefresh: false,
+      Status: {
+        ...state.Status,
+        [action.taskStatus]: {
+          isLoadMore: action.isLoadMore,
+          isRefreshing: action.isRefreshing,
+          isLoading: action.isLoading,
+        }
+      }
     }
     case TYPES.TASK_DETAIL_REQUEST:
     return {
@@ -27,11 +53,25 @@ let taskReducer = (state=initialState,action) => {
         isFetching : true,
       }
     }
+    //接收任务
     case TYPES.TASK_RECEIVE:
     return {
       ...state,
-      isFetching: action.isFetching,
-      List: getNewCache(state, action.taskList, action.taskStatus),
+      List: {
+        ...state.List,
+        [action.taskStatus]: {
+          taskList: state.Status[action.taskStatus].isLoadMore ? state.List[action.taskStatus].taskList.concat(action.taskList) : action.taskList,
+        }
+      },
+      Status: {
+        ...state.Status,
+        [action.taskStatus]: {
+          isLoadMore: false,
+          isRefreshing: false,
+          isLoading: false,
+          isNoMore: action.isNoMore,
+        }
+      },
     }
     case TYPES.DELETE_STORE_TASK:
     return {
@@ -95,7 +135,6 @@ let taskReducer = (state=initialState,action) => {
     case TYPES.TASK_REFRESH:
     return {
       ...state,
-      isRefresh: true
     }
 
     //任务添加结果
@@ -105,6 +144,17 @@ let taskReducer = (state=initialState,action) => {
       addTaskResult: action.result,
       message: action.message,
     }
+
+    //重置状态
+    /*
+    case TYPES.RESET_TASK_STATE:
+    return {
+      ...state,
+      isLoading: true,
+      isLoadMore: false,
+      isRefreshing: false,
+      isNoMore: false,
+    }*/
 
     default:
     return state;

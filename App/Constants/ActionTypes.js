@@ -12,7 +12,8 @@ export const USER_LOGOUT = 'USER_LOGOUT'; //退出登录
  **/
 export const TASK_REQUEST = 'TASK_REQUEST';//正在获取任务
 export const TASK_RECEIVE = 'TASK_RECEIVE';//接收任务
-export const TASK_RECEIVE_FAIL = 'TASK_RECEIVE_FAIL'//接收任务失败
+export const TASK_RECEIVE_FAIL = 'TASK_RECEIVE_FAIL';//接收任务失败
+//export const RESET_TASK_STATE = 'RESET_TASK_STATE'; //重置参数
 
 export const TASK_LIST_REQUEST = 'TASK_LIST_REQUEST'; //正在获取任务列表
 export const TASK_DETAIL_REQUEST = 'TASK_DETAIL_REQUEST';//正在获取任务详情
@@ -36,6 +37,7 @@ export const CHANGE_STORE_TASK_STATUS = 'CHANGE_STORE_TASK_STATUS';//修改本�
 export const COMMENT_LIST_REQUEST='COMMENT_LIST_REQUEST';//评论请求
 export const RECEIVE_COMMENT_LIST='RECEIVE_COMMENT_LIST';//获取评论列表
 export const EMPTY_COMMENT_LIST='EMPTY_COMMENT_LIST';//清空评论列表
+export const HANDLE_COMMENT_RESULT='HANDLE_COMMENT_RESULT';//操作评论结果
 
 /**
 *人员选择

@@ -7,8 +7,6 @@ import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.eguma.barcodescanner.BarcodeScannerPackage;
-import com.lwansbrough.RCTCamera.RCTCameraPackage;
-import com.eguma.barcodescanner.BarcodeScannerPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,11 +27,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new VectorIconsPackage(),
-            new RCTCameraPackage(),
-            new BarcodeScannerPackage(),
-            new RCTCameraPackage(),
-            new BarcodeScannerPackage()
+          new VectorIconsPackage(),
+          new RCTCameraPackage(),
+          new BarcodeScannerPackage()
       );
     }
   };

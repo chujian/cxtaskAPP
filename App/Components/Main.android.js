@@ -15,10 +15,10 @@ import NavigationBar from 'react-native-navbar'
 
 import Menu from './Menu'
 
-import TaskConstanter from '../Constants/TaskConstanter'
+import TaskIndexConstanter from '../Constants/TaskIndexConstanter'
 import ProjectConstanter from '../Constants/ProjectConstanter'
 import MyWork from './Myworks/MyWork'
-import Message from './Message'
+import Message from './Message/Message'
 
 class Main extends Component {
   constructor(props){
@@ -53,7 +53,7 @@ class Main extends Component {
   render(){
     let right_view = null;
     if(this.state.RightView === 'TaskConstanter'){
-      right_view=(<TaskConstanter {...this.props} onPress={()=>this._onMenuClick()}/>);
+      right_view=(<TaskIndexConstanter {...this.props} onPress={()=>this._onMenuClick()}/>);
     }else if(this.state.RightView === 'ProjectConstanter') {
       right_view=(<ProjectConstanter {...this.props} onPress={()=>this._onMenuClick()}/>);
     }else if(this.state.RightView === 'MyWork') {

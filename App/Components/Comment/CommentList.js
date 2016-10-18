@@ -7,10 +7,18 @@ import {
   Text,
   ActivityIndicator,
   InteractionManager,
+  TouchableOpacity,
+  Alert,
 } from 'react-native'
-import {fetchCommentList,emptyCommentList} from '../../Actions/commentActions'
+import Icon from 'react-native-vector-icons/Ionicons'
+//import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast from 'react-native-root-toast';
+
+import CommentAddConstanter from '../../Constants/CommentAddConstanter'
+import {fetchCommentList,emptyCommentList,deleteComment} from '../../Actions/commentActions'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+
 moment().locale('zh-cn');
 
 export default class CommentList extends Component {
@@ -33,10 +41,54 @@ export default class CommentList extends Component {
     dispatch(emptyCommentList());
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {dispatch,comment,taskId,user} = this.props;
+
+    if(nextProps.comment.CommentResult === 'success') {
+      //this.refs.toast.show('添加成功!',DURATION.LENGTH_SHORT);
+      comment.Message === '' && (this.props.comment.Message === nextProps.comment.Message) ? null : Toast.show(comment.Message);
+      InteractionManager.runAfterInteractions(() => {
+        dispatch(fetchCommentList(taskId,user.token));
+      });
+    }
+	}
+
+  //删除评论(自己的)
+  _delComment(commentId) {
+    const {dispatch,user} = this.props;
+    Alert.alert(
+      '提示',
+      '您确定要删除该评论吗?',
+      [
+        {text: '取消',},
+        {text: '确定', onPress: () => {
+          //这里和删除评论一致,先删除本地,然后发送请求给后台删除
+          InteractionManager.runAfterInteractions(() => {
+            dispatch(deleteComment(user.userInfo.LOGINID,user.token,commentId));
+          });
+        }
+      },
+      ]
+    )
+  }
+
+  //打开评论添加界面
+  _openCommentAdd(taskId,Poster){
+    const {navigator} = this.props;
+
+    navigator.push({
+      name: "CommentAdd",
+      component: CommentAddConstanter,
+      params: {
+        task_id: taskId,
+        task_comment: '回复@'+Poster+": ",
+      }
+    });
+  }
+
   render() {
-    const {commentList} = this.props.comment
-    const {List} = this.props.comment.commentList
-    if(commentList.isFetching) {
+    const {user,comment} = this.props;
+    if(comment.isFetching) {
       return(
         <ActivityIndicator
         color="#e0e"
@@ -48,7 +100,7 @@ export default class CommentList extends Component {
     return (
         <View style={styles.List}>
         {
-          List.map((comment,key) => {
+          comment.List.map((comment,key) => {
             ii++
             let source;
             if(comment.picpath.substr(0,4) === 'http') {
@@ -58,7 +110,7 @@ export default class CommentList extends Component {
             }
             return(
               <View style={styles.Item} key={key}>
-                <View>
+                <View style={{paddingTop: 17}}>
                   <Image
                   style={styles.face}
                   source={source}
@@ -68,12 +120,28 @@ export default class CommentList extends Component {
                   <View style={styles.ItemFrom}>
                     <View>
                       <Text style={styles.FromFont}>
-                      {comment.LASTNAME}({comment.Poster}){comment.from}
+                      {comment.LASTNAME}({comment.Poster})
                       </Text>
                     </View>
-                  <Text>{moment(comment.Post_dateTime).startOf('minute').fromNow()}</Text>
+                    <View style={styles.commentTool}>
+                    {comment.Poster === user.userInfo.LOGINID && comment.from !== '来自系统 ' ?
+                      <TouchableOpacity
+                        onPress = {() => this._delComment(comment.id)}
+                      >
+                      <View style={styles.commentToolItem}><Icon name="ios-trash-outline" size={20} color='#cdd'/></View>
+                      </TouchableOpacity>
+                      : null
+                    }
+                      <View style={styles.commentToolItem}><Icon name="ios-thumbs-up-outline" size={20} color='#cdd'/></View>
+                      <TouchableOpacity
+                        onPress = {() => this._openCommentAdd(comment.task_id,comment.LASTNAME)}
+                      >
+                        <View style={styles.commentToolItem}><Icon name="ios-text-outline" size={20} color='#cdd'/></View>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.ItemComment}><Text>{comment.comment}</Text></View>
+                  <View style={styles.ItemComment}><Text style={{fontSize:13,lineHeight:17}}>{comment.comment}</Text></View>
+                  <View style={styles.ItemCommentFloor}><Text style={styles.CommentFloor}>{moment(comment.Post_dateTime).startOf('minute').fromNow()} {comment.from}</Text></View>
                 </View>
               </View>
             );
@@ -96,9 +164,10 @@ const styles = StyleSheet.create({
       borderTopWidth:0.5,
       borderTopColor:'#ccc',
       backgroundColor: '#FFF',
+      marginBottom:60,
     },
     Item: {
-      alignItems:'center',
+      alignItems:'flex-start',
       flexDirection:'row',
       //flex:1,
     },
@@ -116,10 +185,17 @@ const styles = StyleSheet.create({
       width: 32,
       height: 32,
       marginLeft:10,
-      borderRadius: 16,
+      borderRadius: 5,
     },
     ItemComment:{
       padding:10,
+    },
+    ItemCommentFloor: {
+      paddingBottom:5,
+    },
+    CommentFloor: {
+      fontSize:12,
+      color:'#ccc',
     },
     ItemAddress:{
       padding:10,
@@ -133,5 +209,17 @@ const styles = StyleSheet.create({
     FromFont:{
       fontSize: 12,
       color:'#696969'
+    },
+    commentTool: {
+      flex:1,
+      //backgroundColor:'#e0e',
+      flexDirection:'row',
+      justifyContent: 'flex-end',
+    },
+    commentToolItem: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 40,
+      height: 20,
     }
 });

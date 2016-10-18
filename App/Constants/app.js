@@ -17,14 +17,6 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      bg: '#ffffff',
-      appkey: 'AppKey',
-      imei: 'IMEI',
-      package: 'PackageName',
-      deviceId: 'DeviceId',
-      version: 'Version',
-      pushMsg: 'PushMessage',
-      registrationId: 'registrationId'
     }
   }
 
@@ -73,10 +65,12 @@ class App extends React.Component {
   }
 
   configureScene(route) {
-    //console.log('当前route='+route.name);
+    console.log('当前route='+route.name);
     if (route.name && route.name === 'Main') {
       return Navigator.SceneConfigs.FadeAndroid
     } else if(route.name === 'TaskAdd') {
+      return Navigator.SceneConfigs.FloatFromBottom
+    } else if (route.name === 'CommentAdd') {
       return Navigator.SceneConfigs.FloatFromBottom
     } else {
       return Navigator.SceneConfigs.PushFromRight

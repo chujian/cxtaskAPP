@@ -314,7 +314,7 @@ class TaskAdd extends Component {
           <View style={styles.Item}>
             {/*icon view*/}
             <View style={styles.ItemIcon}>
-              <Icon name="ios-contacts" size={32} />
+              <Icon name="ios-contacts-outline" size={32} />
             </View>
             {/*ItemContent*/}
             <View style={styles.ItemContent}>
@@ -330,6 +330,31 @@ class TaskAdd extends Component {
             </View>
           </View>
           </TouchableHighlight>
+
+          <TouchableHighlight
+              onPress={()=>Alert.alert('ddd')}
+              underlayColor="#A8CEBF"
+              >
+          <View style={styles.Item}>
+            {/*icon view*/}
+            <View style={styles.ItemIcon}>
+              <Icon name="ios-alarm-outline" size={32} />
+            </View>
+            {/*ItemContent*/}
+            <View style={styles.ItemContent}>
+              <View style={styles.ItemTitle}>
+                <Text style={styles.TitleFont}>提醒</Text>
+              </View>
+              <View style={styles.ItemContentMain}>
+              <Text>{this.state.task_parterName}</Text>
+              </View>
+              <View style={styles.arrowIcon}>
+              {arrowIcon}
+              </View>
+            </View>
+          </View>
+          </TouchableHighlight>
+
           <TouchableHighlight
               onPress={()=>this._openTaskLevel()}
               underlayColor="#A8CEBF"
@@ -342,7 +367,7 @@ class TaskAdd extends Component {
             {/*ItemContent*/}
             <View style={styles.ItemContentLaster}>
               <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>任务等级</Text>
+                <Text style={styles.TitleFont}>任务级别</Text>
               </View>
               <View style={styles.ItemContentMain}>
               <Text>{this.state.task_levelName}</Text>

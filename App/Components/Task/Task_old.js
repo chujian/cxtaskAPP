@@ -14,15 +14,14 @@ import {
   TouchableOpacity,
   ActionSheetIOS,
 } from 'react-native'
-import {requestTask,fetchTaskList,deleteTask,deleteStoreTask,taskStatusUpdate,storeTaskStatusUpdate} from '../../Actions/taskActions'
+import {requestTask,fetchTaskList,deleteTask,deleteStoreTask,taskStatusUpdate,storeTaskStatusUpdate} from '../Actions/taskActions'
 
-import TaskItem from './TaskItem_new'
-import TaskEmpty from './../Empty/TaskEmpty'
+import TaskItem from './TaskItem'
+import TaskEmpty from './Empty/TaskEmpty'
 
 //import Loading from './loading'
-import TaskAddConstanter from '../../Constants/TaskAddConstanter'
-import TaskDetailConstanter from '../../Constants/TaskDetailConstanter'
-import Loading from '../Common/loading'
+import TaskAddConstanter from '../Constants/TaskAddConstanter'
+import TaskDetailConstanter from '../Constants/TaskDetailConstanter'
 
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -33,7 +32,7 @@ class Task extends Component {
   constructor(props){
     super(props);
     this.state = {
-      taskStatus: props.TaskStatus,//默认显示未处理的任务
+      taskStatus: '1',//默认显示未处理的任务
     }
   }
 
@@ -42,9 +41,9 @@ class Task extends Component {
       const {dispatch}  = this.props;
       const {token,userInfo} = this.props.user;
       //dispatch(requestTask());
-      dispatch(fetchTaskList(userInfo.LOGINID,this.props.TaskStatus,token));
-      //dispatch(fetchTaskList(userInfo.LOGINID,'2',token));
-      //dispatch(fetchTaskList(userInfo.LOGINID,'3',token));
+      dispatch(fetchTaskList(userInfo.LOGINID,'1',token));
+      dispatch(fetchTaskList(userInfo.LOGINID,'2',token));
+      dispatch(fetchTaskList(userInfo.LOGINID,'3',token));
     });
 
   }
@@ -181,17 +180,13 @@ class Task extends Component {
         taskList: [],
       }
     }
-    //let wclCount = !task.List['1'] ? 0 : task.List['1'].taskList.length;
-    //let clzCount = !task.List['2'] ? 0 : task.List['2'].taskList.length;
-    //let ywcCount = !task.List['3'] ? 0 : task.List['3'].taskList.length;
+    let wclCount = !task.List['1'] ? 0 : task.List['1'].taskList.length;
+    let clzCount = !task.List['2'] ? 0 : task.List['2'].taskList.length;
+    let ywcCount = !task.List['3'] ? 0 : task.List['3'].taskList.length;
 
     let source = dataSource.cloneWithRows(task.List[this.state.taskStatus].taskList);
-    if(task.isFetching){
-      return(<Loading />);
-    }
     return(
       <View style={styles.container}>
-      {/**
       <NavigationBar
         style={{marginTop: Platform.OS === 'android' ? 25 : 0,}}
         tintColor={'#3F465A'}
@@ -204,9 +199,8 @@ class Task extends Component {
           <TabCell isSelected={this.state.taskStatus === '1'} onPress={()=>this._onChangeTab('1')} title={'未处理 ('+wclCount+')'} />
           <TabCell isSelected={this.state.taskStatus === '2'} onPress={()=>this._onChangeTab('2')} title={'处理中 ('+clzCount+')'}/>
           <TabCell isSelected={this.state.taskStatus === '3'} onPress={()=>this._onChangeTab('3')} title={'已完成 ('+ywcCount+')'}/>
-        </View>**/}
+        </View>
         {/*我是注释啊  这里判断列表是否为空*/}
-
         { (!task.List[this.state.taskStatus] || task.List[this.state.taskStatus].taskList.length === 0) ? <TaskEmpty onRefresh={()=>this._onRefresh()} /> :
           <SwipeListView
             ref='swipe'
@@ -269,7 +263,7 @@ class Task extends Component {
                           onRefresh={() => this._onRefresh()}
                           colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
                           progressBackgroundColor="#fff"
-                          tintColor="blue"
+                          tintColor="red"
                           />}
             //leftOpenValue={75}
             rightOpenValue={-150}

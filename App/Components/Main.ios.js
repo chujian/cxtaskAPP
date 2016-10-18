@@ -10,8 +10,7 @@ import Loading from './Common/loading'
 import Profile from './User/Profile'
 import LeftButton from './Common/LeftButton'
 
-//import TaskConstanter from '../Constants/TaskConstanter'
-import TaskConstanter from './Task/TaskIndex'
+import TaskIndexConstanter from '../Constants/TaskIndexConstanter'
 import ProjectConstanter from '../Constants/ProjectConstanter'
 import MyWork from './Myworks/MyWork'
 import Message from './Message/Message'
@@ -28,7 +27,7 @@ class Main extends Component {
           return (<TabBarIOS selectedTab = {
               this.state.selectedTab
           }
-              tintColor="#4191FD">
+              tintColor="#3F465A">
               <Icon.TabBarItemIOS
                   iconName="ios-paper-outline"
                   selectedIconName="ios-paper"
@@ -44,7 +43,7 @@ class Main extends Component {
                           });
                       }
                   }>
-                  <TaskConstanter {...this.props}/>
+                  <TaskIndexConstanter {...this.props}/>
               </Icon.TabBarItemIOS>
 
               <Icon.TabBarItemIOS

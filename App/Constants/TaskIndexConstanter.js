@@ -2,12 +2,12 @@ import React,{ Component } from 'react'
 
 import { connect } from 'react-redux'
 
-import Task from '../Components/Task/Task'
+import TaskIndex from '../Components/Task/TaskIndex'
 
-class TaskConstanter extends Component {
+class TaskIndexConstanter extends Component {
   render(){
     return (
-      <Task {...this.props} />
+      <TaskIndex {...this.props} />
     );
   }
 }
@@ -20,4 +20,4 @@ let mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(TaskConstanter)
+export default connect(mapStateToProps)(TaskIndexConstanter)

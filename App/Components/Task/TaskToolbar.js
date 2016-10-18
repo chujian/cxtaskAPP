@@ -7,12 +7,13 @@ StyleSheet,
   TextInput,
   Dimensions,
   PixelRatio,
+  TouchableHighlight,
 } from 'react-native'
 
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 
-const {height, width} = Dimensions.get('window');
+const {Wheight, Wwidth} = Dimensions.get('window');
 
 //任务详情下的工具栏
 export default class TaskToolbar extends Component {
@@ -26,10 +27,17 @@ export default class TaskToolbar extends Component {
   render(){
     return(
       <View style={styles.Toolbar}>
-        <View style={styles.ToolbarItem}><Icon name="chat-bubble-outline" size={20} color="#ccc" /><Text>...</Text></View>
-        <View style={styles.ToolbarItem}><Icon name="thumbs-up" size={20} color="#ccc" /><Text>赞</Text></View>
-        <View style={styles.ToolbarItem}><Icon name="star-outline" size={20} color="#ccc" /><Text>收藏</Text></View>
-        <View style={styles.ToolbarItem}><Icon name="remove-circle-outline" size={20} color="#ccc" /><Text>取消</Text></View>
+        <View style={styles.ItemToolBarView}>
+        <TouchableHighlight
+          onPress={()=>this.props.openComment()}
+          underlayColor="#A8CEBF"
+          style={[styles.ItemToolBar,{borderRightWidth:0.5,borderColor:'#CCC'}]}
+          >
+          <View><Text style={{fontSize:12,paddingLeft:5}}><Icon name="ios-text-outline" size={20} color='#000'/>回复</Text></View>
+          </TouchableHighlight>
+          <View style={[styles.ItemToolBar,{borderRightWidth:0.5,borderColor:'#CCC'}]}><Icon name="ios-heart-outline" size={18} color='#000'/><Text style={{fontSize:12,paddingLeft:5}}>赞</Text></View>
+          <View style={styles.ItemToolBar}><Text style={{fontSize:12,paddingLeft:5}}>完成任务</Text></View>
+        </View>
       </View>
     );
   }
@@ -38,24 +46,25 @@ export default class TaskToolbar extends Component {
 const styles = StyleSheet.create({
     Toolbar: {
       flex:1,
-      backgroundColor: '#e0e',
+      backgroundColor: '#F2F2F2',
       position: 'absolute',
       bottom: 0,
       left:0,
       right:0,
-      height:55,
-      flexDirection: 'row',
-      alignItems: 'center',
+      //height:40,
     },
-    ToolbarItem: {
-      //backgroundColor: '#e00',
-      marginTop: 1,
-      marginBottom: 1,
+    ItemToolBarView: {
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent: 'space-between',
+      height:40,
+      padding:10,
+    },
+    ItemToolBar: {
+      flex:1,
+      width: Wwidth/3,
+      flexDirection:'row',
+      alignItems:'center',
       justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'row',
-      width: width/4,
-      borderRightColor: '#ccc',
-      borderBottomWidth: 0.5,
     }
 });
