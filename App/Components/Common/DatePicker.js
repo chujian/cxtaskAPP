@@ -22,7 +22,7 @@ export default class DatePicker extends React.Component{
     dateModel:'date',
     animationType: 'slide',
     modalVisible: false,
-    transparent: true,
+    transparent: false,
   };
 }
 
@@ -103,7 +103,7 @@ var styles = StyleSheet.create({
     //backgroundColor:'rgba(0, 0, 0, 0.3)',
   },
   calendarMain:{
-    backgroundColor:'#fff',
+    backgroundColor:'#F2F2F2',
     borderTopWidth: 0.5,
     borderTopColor: '#ccc',
     height:250,
@@ -115,10 +115,11 @@ var styles = StyleSheet.create({
   calendarHeader: {
     flexDirection:'row',
     alignItems:'center',
-    height: 30,
+    height: 40,
     justifyContent: 'space-between',
     paddingLeft:30,
     paddingRight:30,
+    paddingTop:10,
     backgroundColor:'#FFF',
   },
   calendar: {
@@ -137,6 +138,6 @@ var styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'500',
     textAlign: 'center',
-    color:'#ff8c00'
+    color:'#ff8c00',
   }
 });

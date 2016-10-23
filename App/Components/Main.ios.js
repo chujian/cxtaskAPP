@@ -27,10 +27,24 @@ class Main extends Component {
           return (<TabBarIOS selectedTab = {
               this.state.selectedTab
           }
-              tintColor="#3F465A">
+              tintColor="#ff7f50">
+
               <Icon.TabBarItemIOS
-                  iconName="ios-paper-outline"
-                  selectedIconName="ios-paper"
+                  title="消息"
+                  iconName="ios-mail-outline"
+                  selectedIconName="ios-mail"
+                  selected={this.state.selectedTab === 'message'}
+                  onPress={() => {
+                      this.setState({
+                          selectedTab: 'message',
+                      });
+                  } }>
+                  <Message {...this.props} />
+              </Icon.TabBarItemIOS>
+
+              <Icon.TabBarItemIOS
+                  iconName="ios-list-box-outline"
+                  selectedIconName="ios-list-box"
                   title = '任务'
                   accessibilityLabel = "Blue Tab"
                   selected = {
@@ -45,7 +59,7 @@ class Main extends Component {
                   }>
                   <TaskIndexConstanter {...this.props}/>
               </Icon.TabBarItemIOS>
-
+{/*
               <Icon.TabBarItemIOS
                   title="项目"
                   iconName="ios-browsers-outline"
@@ -58,6 +72,7 @@ class Main extends Component {
                   } }>
                   <ProjectConstanter {...this.props}/>
               </Icon.TabBarItemIOS>
+*/}
               <Icon.TabBarItemIOS
                   title="工作"
                   iconName="ios-keypad-outline"
@@ -70,18 +85,7 @@ class Main extends Component {
                   } }>
                   <MyWork {...this.props} />
               </Icon.TabBarItemIOS>
-              <Icon.TabBarItemIOS
-                  title="消息"
-                  iconName="ios-mail-outline"
-                  selectedIconName="ios-mail"
-                  selected={this.state.selectedTab === 'message'}
-                  onPress={() => {
-                      this.setState({
-                          selectedTab: 'message',
-                      });
-                  } }>
-                  <Message {...this.props} />
-              </Icon.TabBarItemIOS>
+
               <Icon.TabBarItemIOS
                   title="我的"
                   iconName="ios-contact-outline"

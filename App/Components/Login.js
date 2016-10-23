@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     Image,
     TextInput,
+    StatusBar,
     Alert,
     Switch,
     Dimensions,
@@ -76,12 +77,16 @@ class Login extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+      if (nextProps.user.failure){
+        this.setState({isLoading: false});
+        Alert.alert('', '用户名密码输入错误');
+        return;
+      }
+
       if (nextProps.user.isAuthenticated) {
           nextProps.navigator.push({ name: 'Main', component: Main });
       }
-      if (nextProps.user.failure){
-        Alert.alert('', '用户名密码输入错误');
-      }
+      
       //console.log("user isFetching=="+nextProps.user.isFetching);
       this.setState({isLoading: nextProps.user.isFetching});
     }
@@ -90,6 +95,7 @@ class Login extends Component {
       const {user} = this.props
         return (
             <View style={styles.container}>
+            <StatusBar barStyle={'light-content'} />
             <Loading isLoading={this.state.isLoading} loadingTitle={'正在登录'} />
             <Image
               style={styles.loginbg}
@@ -105,7 +111,7 @@ class Login extends Component {
               <View style={styles.inputContent}>
                 <View style={styles.inputForm}>
                   <View style={styles.inputFormIcon}>
-                    <Icon name="md-person" size={32} color='#FFF'/>
+                    <Icon name="ios-person-outline" size={32} color='#FFF'/>
                   </View>
                   <View style={styles.inputFormInput}>
                     <TextInput

@@ -16,6 +16,9 @@ import Toast from 'react-native-root-toast';
 
 import CommentAddConstanter from '../../Constants/CommentAddConstanter'
 import {fetchCommentList,emptyCommentList,deleteComment} from '../../Actions/commentActions'
+
+import CommentEmpty from '../Empty/CommentEmpty'
+
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 
@@ -88,6 +91,7 @@ export default class CommentList extends Component {
 
   render() {
     const {user,comment} = this.props;
+    /*
     if(comment.isFetching) {
       return(
         <ActivityIndicator
@@ -95,11 +99,13 @@ export default class CommentList extends Component {
         size="small"
         animating={true}/>
       );
-    }
+    }*/
     let ii=0
     return (
         <View style={styles.List}>
+        <View style={styles.CommentCount}><Text style={{color:'#1e90ff',fontSize:15}}>回复({comment.List.length})</Text></View>
         {
+          comment.List.length === 0 ? <CommentEmpty /> :
           comment.List.map((comment,key) => {
             ii++
             let source;
@@ -158,13 +164,19 @@ const styles = StyleSheet.create({
         flex:1,
     },
     List:{
-      marginTop:30,
+      //marginTop:30,
     //  borderBottomWidth:0.5,
     //  borderBottomColor:'#ccc',
-      borderTopWidth:0.5,
-      borderTopColor:'#ccc',
+      //borderTopWidth:0.5,
+      //borderTopColor:'#ccc',
       backgroundColor: '#FFF',
       marginBottom:60,
+    },
+    CommentCount: {
+      height: 40,
+      backgroundColor:'#f5f5f5',
+      justifyContent:'center',
+      paddingLeft:10,
     },
     Item: {
       alignItems:'flex-start',

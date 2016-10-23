@@ -11,7 +11,12 @@ import {
   Alert,
   Platform,
   DatePickerIOS,
+  Image,
 } from 'react-native'
+
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment().locale('zh-cn');
 
 import NavigationBar from 'react-native-navbar'
 import LeftButton from '../Common/LeftButton'
@@ -33,40 +38,9 @@ class TaskDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      token: '',
-      task_id: '',//任务id
-      task_title: '',//任务标题
-      task_executor: '',//发布人,执行人
-      task_executorCode: '',//执行人code
-      task_endDate: '',//任务结束日期
-      task_parterCode: '',//任务参与人code
-      task_parterName: '',//任务参与人姓名
-      task_level: '1',//任务等级
-      task_levelName: '',//任务等级含义
-      task_note: '',//任务备注
-      task_status: '1',//默认未处理
-    //  taskStatusName: '',//状态中文显示
-      project_id: 0,//项目id,默认0为个人项目
-      project_title: '',//项目标题
-      task_sortid: 0,//分类id,默认0为默认分类
-      task_sortName: '',//分类名称
     }
   }
 
-  //取消发布任务
-  _taskCancel(){
-    const {dispatch,navigator} = this.props
-    navigator.pop();
-  }
-
-  //打开任务备注界面
-  _openTaskNote(){
-    const {navigator} = this.props
-    navigator.push({
-      name: 'TaskNote',
-      component: TaskNote,
-    });
-  }
 
   //打开任务级别界面
   _openTaskLevel(){
@@ -77,14 +51,7 @@ class TaskDetail extends Component {
     })
   }
 
-  _openTaskProSortStatus(){
-    const {navigator} = this.props
-    navigator.push({
-      name: 'TaskProSortStatus',
-      component: TaskProjectSortStatus,
-    });
-  }
-
+  //打开员工界面
   _openDepartmentEmployee(){
     const {navigator} = this.props
     navigator.push({
@@ -117,35 +84,33 @@ class TaskDetail extends Component {
       Alert.alert("请选择结束日期");
       return false;
     }
-
-    let postData = {
-      token: this.state.token,
-      task_title: encodeURIComponent(this.state.task_title),
-      task_executor: this.state.task_executorCode,
-      task_executorCode: this.state.task_executorCode,
-      task_endDate: this.state.task_endDate,
-      task_parterCode: this.state.task_parterCode,
-      task_parterName: this.state.task_parterName,
-      task_level: this.state.task_level,
-      task_levelName: this.state.task_levelName,
-      task_note: encodeURI(this.state.task_note),
-      task_status: this.state.task_status,
-      project_id: this.state.project_id,
-      task_sortid: this.state.task_sortid,
-    }
     //出现正在保存
     this.setState({isLoading: true});
     //console.log(JSON.stringify(postData));
-    dispatch(saveTask(user.userInfo.LOGINID,user.token,postData));
+    //dispatch(saveTask(user.userInfo.LOGINID,user.token,postData));
     navigator.pop();
   }
+
+  //头像地址
+  _picpath(){
+    if(this.props.taskInfo.picpath.substr(0,4) == 'http') {
+      return(<Image
+          style={styles.face}
+          source={{uri: this.props.taskInfo.picpath}}
+        />);
+        }else{
+          return(<Image
+          style={styles.face}
+          source={this.props.taskInfo.picpath === "woman.jpg"?require('../../Images/woman.jpg'):require('../../Images/man.jpg')}
+        />);
+      }
+    }
 
   //组件状态赋值
   componentWillMount(){
     //taskInfo 是task父组件传递过来的
     const {dispatch,taskInfo} = this.props
     const {token,userInfo} = this.props.user
-
 
     //任务等级
     let task_levelName = '';
@@ -156,30 +121,10 @@ class TaskDetail extends Component {
     }else{
       task_levelName = "非常紧急";
     }
-
-    this.setState({
-      token: token,//token
-      task_id: taskInfo.t_id,//任务id
-      task_title: taskInfo.t_title,//标题
-      task_executor: taskInfo.t_creatorName,//发布人姓名
-      task_executorCode: taskInfo.t_executor,//发布人ID
-      task_note: taskInfo.t_notes,//任务备注
-      task_level: taskInfo.t_levelid,
-      task_levelName: task_levelName,//任务等级 中文
-      task_parterName: taskInfo.t_partername,//参与人姓名
-      task_parterCode: taskInfo.t_parterid,//参与人ID
-      task_endDate: taskInfo.t_endDate,//任务结束日期
-      project_id: taskInfo.t_projectid,//项目id
-      project_title: taskInfo.p_title,//项目标题
-      task_sortid: taskInfo.sort_id,//分类id
-      task_sortName: taskInfo.sort_name,//分类名称
-      //任务状态,如果本人创建的,显示主任务状态,否则显示参与人任务状态
-      task_status: (userInfo.LOGINID === taskInfo.t_executor) ? taskInfo.t_status : taskInfo.task_parter_status,
-    });
       //备注dispatch
-      dispatch(addTaskNote(taskInfo.t_notes));
+      //dispatch(addTaskNote(taskInfo.t_notes));
       //任务级别dispatch
-      dispatch(changeTaskLevel(task_levelName));
+      //dispatch(changeTaskLevel(task_levelName));
   }
 
   //组件加载后
@@ -200,21 +145,7 @@ class TaskDetail extends Component {
   componentWillReceiveProps(nextProps) {
     const {taskDetail} = this.props.task
     const {token} = this.props.user
-    //备注赋值
-    if(nextProps.task.taskNew.taskNote !== this.props.task.taskNew.taskNote) {
-      this.setState({task_note: nextProps.task.taskNew.taskNote});
-    }
-    //等级赋值
-    if(nextProps.task.taskNew.taskLevel !== this.props.task.taskNew.taskLevel) {
-      this.setState({task_levelName: nextProps.task.taskNew.taskLevel});
-      if(nextProps.task.taskNew.taskLevel === '普通') {
-        this.setState({task_level: '1'});
-      }else if(nextProps.task.taskNew.taskLevel === '紧急') {
-        this.setState({task_level: '2'});
-      }else{
-        this.setState({task_level: '3'});
-      }
-    }
+
     //选择人员赋值
     //if(this.props.employee.chooseEmployee !== nextProps.employee.chooseEmployee) {
     if(nextProps.employee.chooseEmployee) {
@@ -227,14 +158,11 @@ class TaskDetail extends Component {
           chooseName += chooseEmployee[key]+',';
           chooseLOGINID += key+',';
       }
-
-      //this.setState({task_parterName: chooseName});
-      //this.setState({task_parterCode: chooseLOGINID.substring(0,chooseLOGINID.length-1)});
     }
   }
 
   render(){
-    const {navigator} = this.props
+    const {navigator,taskInfo,user} = this.props
 
     const arrowIcon = (<Icon name="ios-arrow-forward-outline" size={24} color='#eee' />);
     const rightButtonConfig = {
@@ -261,153 +189,89 @@ class TaskDetail extends Component {
           tintColor={'#3F465A'}
           title={{title: '任务详情',tintColor:'#FFF'}}
           rightButton={rightButtonConfig}
-          leftButton={<LeftButton onPress={()=>this._taskCancel()} />}
+          leftButton={<LeftButton onPress={()=>navigator.pop()} />}
           />
         <ScrollView contentContainerStyle={styles.scroll}>
-          <View style={styles.taskTitleView}>
-            <TextInput
-              style={{height: 45,marginLeft:5,fontSize:20}}
-              placeholder='任务标题'
-              underlineColorAndroid='transparent'
-              onChangeText={(text) => this.setState({task_title: text})}
-              value={this.state.task_title}
-            />
+
+          {/*任务头部*/}
+          <View style = {styles.ItemHead}>
+            {this._picpath()}
+            <View style = {styles.TaskPublisher}><Text style={styles.creatorName}>{taskInfo.t_creatorName}</Text><Text style={{fontSize:13,color:'#CCC',paddingTop:5}}>{moment(taskInfo.t_createTime).format("MMMDo hh:mm:ss")} 来自iphone</Text></View>
+            <View style = {styles.ItemTaskStatus}><Text style={{fontSize:13,color:'#89CBC1'}}>任务-{taskStatus}</Text><Text style={{fontSize:12,color:'#ccc'}}>{taskInfo.parterCompletedTotal}/{taskInfo.parterTotal}</Text></View>
           </View>
+
+          {/*任务标题*/}
+          <View style = {styles.TaskTitleView}><Text style={styles.TaskTitle}>{taskInfo.t_levelid === '3' ? '!!!' : ''}{taskInfo.t_title}</Text></View>
+
+          {/*任务内容*/}
+          <View style = {styles.TaskTitleView}><Text style={styles.TaskContent}>{taskInfo.t_notes === '' ? '无任务内容' : taskInfo.t_notes}</Text></View>
+
+          <View style={styles.List}>
+          {/*任务接收人*/}
           <TouchableHighlight
-              onPress={()=>this._openTaskProSortStatus()}
-              underlayColor="#A8CEBF"
-              >
-          <View style={[styles.Item,{backgroundColor:'#FFF'}]}>
+              onPress={()=>{user.userInfo.LOGINID === taskInfo.t_creator ? this._openDepartmentEmployee() : null}}
+              underlayColor="#CDCDCD">
+          <View style={styles.Item}>
+            {/*icon view*/}
+            <View style={styles.ItemIcon}>
+              <Icon name="ios-people-outline" size={20} color="#8D98A6" />
+            </View>
+            {/*ItemContent*/}
             <View style={styles.ItemContent}>
-              <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>{this.state.task_sortName}  {this.state.project_title}</Text>
-              </View>
               <View style={styles.ItemContentMain}>
-              <Text style={styles.TitleFont}>{taskStatus}</Text>
+                <Text>{taskInfo.t_partername}</Text>
+              </View>
+              <View style={styles.arrowIcon}>
+              {user.userInfo.LOGINID === taskInfo.t_creator ? <Icon name="ios-arrow-forward-outline" size={24} color='#eee' /> : null}
               </View>
             </View>
           </View>
           </TouchableHighlight>
 
-          <View style={styles.List}>
+          {/*到期日期*/}
+          <TouchableHighlight
+              onPress={()=>{user.userInfo.LOGINID === taskInfo.t_creator ? this._openDepartmentEmployee() : null}}
+              underlayColor="#CDCDCD">
           <View style={styles.Item}>
             {/*icon view*/}
             <View style={styles.ItemIcon}>
-              <Icon name="ios-contact" size={32} />
+              <Icon name="ios-time-outline" size={20} color="#8D98A6" />
             </View>
             {/*ItemContent*/}
             <View style={styles.ItemContent}>
-              <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>发布人</Text>
-              </View>
               <View style={styles.ItemContentMain}>
-              <Text>{this.state.task_executor} ({this.state.task_executorCode})</Text>
+                <Text>{moment(taskInfo.t_createTime).format('dddd')},{moment(taskInfo.t_createTime).format("MMM Do")}</Text>
               </View>
               <View style={styles.arrowIcon}>
-              {arrowIcon}
+              {user.userInfo.LOGINID === taskInfo.t_creator ? <Icon name="ios-arrow-forward-outline" size={24} color='#eee' /> : null}
               </View>
             </View>
           </View>
+          </TouchableHighlight>
+
+          {/*提醒*/}
           <TouchableHighlight
-              onPress={()=>this.refs.datepicker.open()}
-              underlayColor="#A8CEBF"
-              >
+              onPress={()=>{user.userInfo.LOGINID === taskInfo.t_creator ? this._openDepartmentEmployee() : null}}
+              underlayColor="#CDCDCD">
           <View style={styles.Item}>
             {/*icon view*/}
             <View style={styles.ItemIcon}>
-              <Icon name="ios-time-outline" size={32} />
+              <Icon name="ios-notifications-outline" size={20} color="#8D98A6" />
             </View>
             {/*ItemContent*/}
             <View style={styles.ItemContentLaster}>
-              <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>结束日期</Text>
-
-              </View>
               <View style={styles.ItemContentMain}>
-              <Text>{this.state.task_endDate}</Text>
+              <Text>5分钟前</Text>
               </View>
               <View style={styles.arrowIcon}>
-              {arrowIcon}
+              {user.userInfo.LOGINID === taskInfo.t_creator ? <Icon name="ios-arrow-forward-outline" size={24} color='#eee' /> : null}
               </View>
             </View>
           </View>
           </TouchableHighlight>
+
           </View>
 
-          <View style={styles.List}>
-          <TouchableHighlight
-              onPress={()=>this._openDepartmentEmployee()}
-              underlayColor="#A8CEBF"
-              >
-          <View style={styles.Item}>
-            {/*icon view*/}
-            <View style={styles.ItemIcon}>
-              <Icon name="ios-contacts" size={32} />
-            </View>
-            {/*ItemContent*/}
-            <View style={styles.ItemContent}>
-              <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>接收人</Text>
-              </View>
-              <View style={styles.ItemContentMain}>
-              <Text>{this.state.task_parterName}</Text>
-              </View>
-              <View style={styles.arrowIcon}>
-              {arrowIcon}
-              </View>
-            </View>
-          </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-              onPress={()=>this._openTaskLevel()}
-              underlayColor="#A8CEBF"
-              >
-          <View style={styles.Item}>
-            {/*icon view*/}
-            <View style={styles.ItemIcon}>
-              <Icon name="ios-megaphone-outline" size={32} />
-            </View>
-            {/*ItemContent*/}
-            <View style={styles.ItemContentLaster}>
-              <View style={styles.ItemTitle}>
-                <Text style={styles.TitleFont}>任务等级</Text>
-              </View>
-              <View style={styles.ItemContentMain}>
-              <Text>{this.state.task_levelName}</Text>
-              </View>
-              <View style={styles.arrowIcon}>
-              {arrowIcon}
-              </View>
-            </View>
-          </View>
-          </TouchableHighlight>
-          </View>
-
-          <View style={styles.List}>
-          <TouchableHighlight
-              onPress={()=>this._openTaskNote()}
-              underlayColor="#A8CEBF"
-              >
-            <View style={styles.Item}>
-              {/*icon view*/}
-              <View style={styles.ItemIcon}>
-                <Icon name="ios-list-box-outline" size={32} />
-              </View>
-              {/*ItemContent*/}
-              <View style={styles.ItemContentNote}>
-                <View style={styles.ItemTitle}>
-                  <Text style={styles.TitleFont}>内容</Text>
-                </View>
-                <View style={styles.ItemContentMain}>
-                <Text>{this.state.task_note}</Text>
-                </View>
-                <View style={styles.arrowIcon}>
-                {arrowIcon}
-                </View>
-              </View>
-            </View>
-            </TouchableHighlight>
-          </View>
           <CommentListConstanter {...this.props}  taskId={this.props.taskInfo.t_id}/>
         </ScrollView>
 
@@ -431,10 +295,11 @@ class TaskDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#efeff4',
+        backgroundColor: '#F8F8F8',
     },
     scroll:{
       padding:0,
+      //backgroundColor:'#fff',
     },
     taskTitleView:{
       backgroundColor: '#fff',
@@ -443,13 +308,19 @@ const styles = StyleSheet.create({
       borderBottomColor: '#ccc',
       borderBottomWidth: 0.5,
     },
+    //任务标题字体
+    TaskTitle: {
+      fontSize:15,
+      flex:1,
+    },
     List:{
-      marginTop:15,
+      //marginTop:15,
       borderBottomWidth:0.5,
       borderBottomColor:'#ccc',
       borderTopWidth:0.5,
       borderTopColor:'#ccc',
       backgroundColor: '#FFF',
+      marginBottom:10,
     },
     Item: {
       flex:1,
@@ -465,15 +336,16 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       borderBottomColor: '#ccc',
       borderBottomWidth: 0.5,
-      paddingLeft:10,
-      paddingRight:10,
-      height: 56,
+      //paddingLeft:10,
+      //paddingRight:10,
+      //backgroundColor: '#e0e',
+      height: 40,
     },
     ItemContentLaster: {
       flex:1,
-      height: 56,
-      paddingLeft:10,
-      paddingRight:10,
+      height: 40,
+      //paddingLeft:10,
+      //paddingRight:10,
       flexDirection:'row',
     },
     ItemContentNote: {
@@ -496,14 +368,56 @@ const styles = StyleSheet.create({
     ItemContentMain:{
       flex:1,
       justifyContent:'center',
-      alignItems:'flex-end',
-      marginRight:5,
-      paddingLeft:5,
+      alignItems:'flex-start',
+      paddingLeft:10,
+      paddingRight:10,
       flexWrap: 'wrap',
+      //backgroundColor: '#ccc',
     },
     TitleFont:{
       fontSize:15,
       color:'#000',
-    }
+    },
+    ItemHead: {
+      flex: 1,
+      //padding:10,
+      backgroundColor: '#fff',
+      paddingLeft:15,
+      paddingRight:15,
+      paddingTop:10,
+      paddingBottom:10,
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent: 'center',
+    },
+    TaskPublisher: {
+      flex:1,
+      alignItems:'flex-start',
+    },
+    //任务状态
+    ItemTaskStatus: {
+      width: 100,
+      alignItems:'flex-end',
+    },
+    //任务内容
+    TaskContent: {
+      fontSize: 15.5,
+      color:'#8F8F97',
+      lineHeight: 20,
+      flex:1,
+    },
+    face: {
+      width: 38,
+      height: 38,
+      borderRadius: 5,
+      marginRight:10,
+    },
+    TaskTitleView: {
+      backgroundColor: '#fff',
+      padding:10,
+      justifyContent: 'center',
+      alignItems:'flex-start',
+      flexWrap: 'wrap',
+    },
 });
 export default TaskDetail;

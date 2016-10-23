@@ -23,10 +23,12 @@ import TaskAddConstanter from '../../Constants/TaskAddConstanter'
 import TaskDetailConstanter from '../../Constants/TaskDetailConstanter'
 import Loading from '../Common/loading'
 import LoadMoreFooter from '../Common/LoadMoreFooter'
+import TaskHandlerModal from '../Common/TaskHandlerModal'
 
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { SwipeListView } from 'react-native-swipe-list-view';
+//import { SwipeListView } from 'react-native-swipe-list-view';
+
 
 class Task extends Component {
   constructor(props){
@@ -155,15 +157,12 @@ class Task extends Component {
     },
     (buttonIndex) => {
       switch (buttonIndex) {
-        case 2:
-          this._closeRow(secdId,rowId,rowMap);
-          break;
         case 1:
           Alert.alert(
             '提示',
             '您确定要删除该任务吗?',
             [
-              {text: '取消', onPress: () => this._closeRow(secdId,rowId,rowMap)},
+              {text: '取消', onPress: () => null},
               {text: '确定', onPress: () => this._deleteTask(Task,secdId,rowId,rowMap)},
             ]
           )
@@ -210,7 +209,12 @@ class Task extends Component {
                 renderFooter={()=>this._renderFooter()}
                 renderRow={(Task) => {
                   return (
-                    <TaskItem task={Task} User={user} onPress={this._openTaskDetail.bind(this,Task)} />
+                    <TaskItem
+                      task={Task}
+                      User={user}
+                      onPress={this._openTaskDetail.bind(this,Task)}
+                      onModalOpen={()=>this._showActionSheet()}
+                    />
                   );
                 }}
                 refreshControl={
@@ -232,7 +236,7 @@ class Task extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F2F2',
+        backgroundColor: '#f2f2f2',
       //  marginTop: Platform.OS === 'android' ? 20 : 0,
       marginBottom: Platform.OS === 'android' ? 0 : 50,
     },

@@ -8,6 +8,7 @@ import {
     TextInput,
     Platform,
     InteractionManager,
+    Alert,
 } from 'react-native';
 import NavigationBar from 'react-native-navbar'
 import Toast from 'react-native-root-toast';
@@ -33,6 +34,10 @@ class CommentAdd extends Component {
   _commentAdd() {
     const {user,dispatch,navigator} = this.props;
 
+    if(this.state.taskComment.length < 5){
+      Alert.alert('提示','请输入评论内容');
+      return;
+    }
     let postData = {
       comment_body: this.state.taskComment,
       task_id: this.state.taskId,

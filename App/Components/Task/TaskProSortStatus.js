@@ -104,7 +104,6 @@ class TaskProjectSortStatus extends Component {
       </View>
     );
   }
-
 }
 const styles = StyleSheet.create({
     container: {
