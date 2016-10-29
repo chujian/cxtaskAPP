@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableHighlight,
   DatePickerIOS,
+  TouchableOpacity,
   Modal,
 } from 'react-native';
 
@@ -20,9 +21,9 @@ export default class DatePicker extends React.Component{
   this.state = {
     date: new Date(),
     dateModel:'date',
-    animationType: 'slide',
+    animationType: 'none',
     modalVisible: false,
-    transparent: false,
+    transparent: true,
   };
 }
 
@@ -34,10 +35,12 @@ export default class DatePicker extends React.Component{
         animationType={this.state.animationType}
         transparent={this.state.transparent}
         visible={this.state.modalVisible}
-        onRequestClose={() => {this._setModalVisible(false)}}
+        onRequestClose={() => null}
         >
         <View style={styles.container}>
-
+        <TouchableOpacity onPress={()=>this.setState({modalVisible: false})}>
+        <View style={{backgroundColor:'black',width:deviceScreen.width,height:deviceScreen.height,opacity:0.3}} />
+        </TouchableOpacity>
         <View style={styles.calendarMain}>
           <View style={styles.calendarHeader}>
             <TouchableHighlight onPress={()=>this._cancel()} underlayColor={'#eee'}>
@@ -103,7 +106,7 @@ var styles = StyleSheet.create({
     //backgroundColor:'rgba(0, 0, 0, 0.3)',
   },
   calendarMain:{
-    backgroundColor:'#F2F2F2',
+    backgroundColor:'#ffffff',
     borderTopWidth: 0.5,
     borderTopColor: '#ccc',
     height:250,
@@ -120,7 +123,7 @@ var styles = StyleSheet.create({
     paddingLeft:30,
     paddingRight:30,
     paddingTop:10,
-    backgroundColor:'#FFF',
+    backgroundColor:'#F2F2F2',
   },
   calendar: {
     height:60,

@@ -186,7 +186,7 @@ class TaskDetail extends Component {
         <NavigationBar
           style={{marginTop: Platform.OS === 'android' ? 25 : 0,}}
           statusBar={{style:'light-content',showAnimation:'slide'}}
-          tintColor={'#3F465A'}
+          tintColor={'#288fd2'}
           title={{title: '任务详情',tintColor:'#FFF'}}
           rightButton={rightButtonConfig}
           leftButton={<LeftButton onPress={()=>navigator.pop()} />}
@@ -201,10 +201,16 @@ class TaskDetail extends Component {
           </View>
 
           {/*任务标题*/}
-          <View style = {styles.TaskTitleView}><Text style={styles.TaskTitle}>{taskInfo.t_levelid === '3' ? '!!!' : ''}{taskInfo.t_title}</Text></View>
+          <View style = {styles.TaskTitleView}>
+            <Text style={styles.TaskTitle}>{taskInfo.t_levelid === '3' ? '!!!' : ''}{taskInfo.t_title}</Text>
+          </View>
 
           {/*任务内容*/}
-          <View style = {styles.TaskTitleView}><Text style={styles.TaskContent}>{taskInfo.t_notes === '' ? '无任务内容' : taskInfo.t_notes}</Text></View>
+          <View style = {styles.TaskContentView}>
+            <View style={styles.TaskContentMainView}>
+            <Text style={styles.TaskContent}>{taskInfo.t_notes === '' ? '无任务内容' : taskInfo.t_notes}</Text>
+            </View>
+          </View>
 
           <View style={styles.List}>
           {/*任务接收人*/}
@@ -295,7 +301,8 @@ class TaskDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
+        //backgroundColor: '#F8F8F8',
+        backgroundColor:'#ffffff',
     },
     scroll:{
       padding:0,
@@ -312,6 +319,7 @@ const styles = StyleSheet.create({
     TaskTitle: {
       fontSize:15,
       flex:1,
+      color:'#B0B0B0',
     },
     List:{
       //marginTop:15,
@@ -382,13 +390,17 @@ const styles = StyleSheet.create({
       flex: 1,
       //padding:10,
       backgroundColor: '#fff',
-      paddingLeft:15,
-      paddingRight:15,
+      marginLeft:10,
+      marginRight:10,
+      //paddingLeft:15,
+      //paddingRight:15,
       paddingTop:10,
       paddingBottom:10,
       flexDirection:'row',
       alignItems:'center',
       justifyContent: 'center',
+      borderBottomColor: '#ccc',
+      borderBottomWidth: 0.5,
     },
     TaskPublisher: {
       flex:1,
@@ -399,17 +411,26 @@ const styles = StyleSheet.create({
       width: 100,
       alignItems:'flex-end',
     },
+    //任务内容外框View
+    TaskContentView:{
+      padding:10,
+      backgroundColor:'#FFF',
+    },
+    //内容主要区域
+    TaskContentMainView:{
+      backgroundColor:'#DFF3FE',
+    },
     //任务内容
     TaskContent: {
       fontSize: 15.5,
-      color:'#8F8F97',
+      color:'#B0B0B0',
       lineHeight: 20,
       flex:1,
     },
     face: {
-      width: 38,
-      height: 38,
-      borderRadius: 5,
+      width: 42,
+      height: 42,
+      borderRadius: 2,
       marginRight:10,
     },
     TaskTitleView: {

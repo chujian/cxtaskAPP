@@ -9,6 +9,7 @@ import {
     Platform,
     InteractionManager,
     Alert,
+    Keyboard,
 } from 'react-native';
 import NavigationBar from 'react-native-navbar'
 import Toast from 'react-native-root-toast';
@@ -27,7 +28,12 @@ class CommentAdd extends Component {
   }
 
   _commentCancel(){
-    this.props.navigator.pop();
+    const {navigator} = this.props;
+    Keyboard.dismiss();
+    InteractionManager.runAfterInteractions(()=>{
+      //Keyboard.dismiss();
+      navigator.pop();
+    })
   }
 
   //添加评论

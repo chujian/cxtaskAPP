@@ -87,7 +87,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "io.cxjky.taskApp"
+        applicationId "com.cxtaskapp"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1

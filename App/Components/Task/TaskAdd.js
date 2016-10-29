@@ -12,7 +12,10 @@ import {
   Alert,
   Platform,
   DatePickerIOS,
+  Keyboard,
 } from 'react-native'
+
+import dismissKeyboard from 'dismissKeyboard'
 
 import NavigationBar from 'react-native-navbar'
 import LeftButton from '../Common/LeftButton'
@@ -28,7 +31,6 @@ import Reminder from './Reminder'
 import {cancelTask,saveTask,fetchTaskList} from '../../Actions/taskActions'
 import {clearEmployee} from '../../Actions/employeeActions'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Modal from 'react-native-modalbox'
 
 class TaskAdd extends Component {
   constructor(props) {
@@ -72,7 +74,14 @@ class TaskAdd extends Component {
             ]
           )
     }else{
+
+
+    //dismissKeyboard();
+    InteractionManager.runAfterInteractions(()=>{
+      //Keyboard.dismiss();
       navigator.pop();
+    })
+      //navigator.pop();
     }
   }
 
@@ -253,6 +262,7 @@ class TaskAdd extends Component {
               underlineColorAndroid='transparent'
               onChangeText={(text) => this.setState({task_title: text})}
               value={this.state.task_title}
+              autoFocus={true}
             />
           </View>
 
@@ -426,10 +436,6 @@ class TaskAdd extends Component {
         }
         minimumDate={new Date()}
         />
-
-        <Modal style={[styles.modal, styles.modal2]} backdrop={true}  position={"bottom"} ref={"modal2"} swipeToClose={false}>
-          <Text style={[styles.text, {color: "white"}]}>Modal on top</Text>
-        </Modal>
 
       </View>
     );

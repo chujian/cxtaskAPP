@@ -7,6 +7,7 @@ import {
     Image,
     View,
     TouchableHighlight,
+    TouchableOpacity,
     PixelRatio,
     Dimensions,
 } from 'react-native';
@@ -99,7 +100,11 @@ class TaskItem extends Component {
               <View style={styles.ItemToolBarView}>
                 <View style={[styles.ItemToolBar,{borderRightWidth:0.5,borderColor:'#CCC'}]}><Icon name="ios-text-outline" size={20} color='#555555'/><Text style={{fontSize:12,paddingLeft:5,color:'#555555'}}>{Task.commentCount !== 0 ? Task.commentCount : '回复'}</Text></View>
                 <View style={[styles.ItemToolBar,{borderRightWidth:0.5,borderColor:'#CCC'}]}><Icon name="ios-heart-outline" size={18} color='#555555'/><Text style={{fontSize:12,paddingLeft:5,color:'#555555'}}>赞</Text></View>
-                <View style={styles.ItemToolBar}><Text style={{fontSize:12,paddingLeft:5,color:'#555555'}} onPress={()=>this.props.onModalOpen()}>... 更多</Text></View>
+                <View style={styles.ItemToolBar}>
+                <TouchableOpacity onPress={()=>this.props.onModalOpen()}>
+                <Text style={{fontSize:12,paddingLeft:5,margin:5,color:'#555555'}} >... 更多</Text>
+                </TouchableOpacity>
+                </View>
               </View>
             </View>);
     }

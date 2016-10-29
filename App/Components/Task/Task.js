@@ -27,7 +27,6 @@ import TaskHandlerModal from '../Common/TaskHandlerModal'
 
 import NavigationBar from 'react-native-navbar'
 import Icon from 'react-native-vector-icons/Ionicons'
-//import { SwipeListView } from 'react-native-swipe-list-view';
 
 
 class Task extends Component {
@@ -42,6 +41,8 @@ class Task extends Component {
       page: 1,
       isLoadMore: false,
       isRefreshing: false,
+      visibleModal: null,
+      taskModal: {task_id:null},//传递倒modal的参数
     }
   }
 
@@ -173,6 +174,15 @@ class Task extends Component {
     });
   }
 
+  _openModal(Task){
+    this.setState({
+      taskModal:{
+        task_id:Task.t_id,
+      }
+    });
+    this.refs.TaskHandlerModal.open();
+  }
+
   componentWillReceiveProps(nextProps) {
     const {task} = this.props;
     const {dispatch}  = this.props;
@@ -213,7 +223,7 @@ class Task extends Component {
                       task={Task}
                       User={user}
                       onPress={this._openTaskDetail.bind(this,Task)}
-                      onModalOpen={()=>this._showActionSheet()}
+                      onModalOpen={this._openModal.bind(this,Task)}
                     />
                   );
                 }}
@@ -227,6 +237,10 @@ class Task extends Component {
                               progressBackgroundColor="#ffff00"
                               />}
               />}
+
+
+                <TaskHandlerModal ref='TaskHandlerModal' taskModal={this.state.taskModal} {...this.props}/>
+
           </View>
     );
   }
@@ -240,6 +254,24 @@ const styles = StyleSheet.create({
       //  marginTop: Platform.OS === 'android' ? 20 : 0,
       marginBottom: Platform.OS === 'android' ? 0 : 50,
     },
+    container2: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center'
+},
+modalContent: {
+  height:200,
+  backgroundColor: 'white',
+  padding: 22,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)'
+},
+bottomModal: {
+  justifyContent: 'flex-end',
+  margin: 0
+}
 });
 
 
